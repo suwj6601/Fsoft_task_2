@@ -222,6 +222,7 @@ const StarCardInfo = (props: StarCardInfoProps) => {
       >
         {getResultEachTurn()}
       </Modal>
+
       <Modal
         title="Final result"
         open={isModalResultOpen}
