@@ -1,7 +1,7 @@
 import { MainPageBackground, MainPageContent, MainPageWrapper } from "./style";
 import StarGame from "../../components/StarGame";
 import LoadingAnimation from "../../common/LoadingAnimation";
-import GameScore from "../../components/GameScore";
+import DisplayGameScore from "../../components/DisplayGameScore";
 
 const MainPage = () => {
   return (
@@ -14,7 +14,7 @@ const MainPage = () => {
         </MainPageContent>
         <LoadingAnimation />
       </MainPageWrapper>
-      <GameScore />
+      <DisplayGameScore />
     </>
   );
 };

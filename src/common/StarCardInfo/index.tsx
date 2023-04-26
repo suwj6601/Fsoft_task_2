@@ -23,16 +23,15 @@ const StarCardInfo = (props: StarCardInfoProps) => {
   const [result, setResult] = useState(0);
   const [isUserWin, setIsUserWin] = useState(0);
 
-  const dispatch = useDispatch();
-
   // get data from redux
+  const dispatch = useDispatch();
   const movieStateReducer = useSelector((state: any) => state?.movieReducer);
   const selectedRandomCard = movieStateReducer?.selectedRandomCard;
   const hiddenRandomCard = movieStateReducer?.hiddenRandomCard;
   const totalTurn = movieStateReducer?.totalTurn;
   const [computerScore, userScore] = movieStateReducer?.score;
 
-  // antd
+  // handle OK function of modal when each turn
   const handleModalOk = () => {
     setClicked(false);
     setIsModalOpen(false);
@@ -53,6 +52,7 @@ const StarCardInfo = (props: StarCardInfoProps) => {
     dispatch(actSetTotalTurn(totalTurn + 1));
   };
 
+  // handle OK function of modal in final turn
   const handleModalResultOk = () => {
     setIsModalResultOpen(false);
     dispatch(actSetTotalTurn(0));
@@ -65,116 +65,86 @@ const StarCardInfo = (props: StarCardInfoProps) => {
     dispatch(actSetScoreGame([0, 0]));
   };
 
+  // handle Cancel function of modal
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
+  // check value input is valid or not
+  const checkTypeInputValid = (computerField: string, userField: string) => {
+    if (
+      computerField === "unknown" ||
+      computerField === "n/a" ||
+      userField === "unknown" ||
+      userField === "n/a"
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  // compare two value field
+  const compareTwoValueField = (
+    computerFieldNumber: number,
+    userFieldNumber: number
+  ) => {
+    if (computerFieldNumber > userFieldNumber) {
+      setResult(-1);
+      dispatch(actSetScoreGame([computerScore + 1, userScore]));
+    } else if (computerFieldNumber < userFieldNumber) {
+      setResult(1);
+      dispatch(actSetScoreGame([computerScore, userScore + 1]));
+    } else if (computerFieldNumber === userFieldNumber) {
+      setResult(0);
+    }
+    setIsModalOpen(true);
+  };
+
+  // handle click function when click each card
   const handleClickCard = (type: string) => {
     setClicked(true);
     setIsModalOpen(true);
 
-    if (totalTurn < 9) {
+    const computerField = selectedRandomCard[type];
+    const userField = hiddenRandomCard[type];
+
+    const computerFieldNumber = parseInt(
+      selectedRandomCard[type]?.replace(",", "")
+    );
+    const userFieldNumber = parseInt(hiddenRandomCard[type]?.replace(",", ""));
+
+    const isValidType = checkTypeInputValid(computerField, userField);
+
+    if (totalTurn <= 9) {
       switch (type) {
         case "max_atmosphering_speed":
-          const computerFieldSpeed = selectedRandomCard?.max_atmosphering_speed;
-          const userFieldSpeed = hiddenRandomCard?.max_atmosphering_speed;
-          const computerSpeed = parseInt(
-            selectedRandomCard?.max_atmosphering_speed
-              .replace(",", "")
-              .replace(",", "")
-          );
-          const userSpeed = parseInt(
-            hiddenRandomCard?.max_atmosphering_speed
-              .replace(",", "")
-              .replace(",", "")
-          );
-
-          if (
-            computerFieldSpeed === "unknown" ||
-            computerFieldSpeed === "n/a" ||
-            userFieldSpeed === "unknown" ||
-            userFieldSpeed === "n/a"
-          ) {
+          if (!isValidType) {
             // Draw
             setResult(0);
             setIsModalOpen(true);
           } else {
-            if (computerSpeed > userSpeed) {
-              setResult(-1);
-              dispatch(actSetScoreGame([computerScore + 1, userScore]));
-            } else if (computerSpeed < userSpeed) {
-              setResult(1);
-              dispatch(actSetScoreGame([computerScore, userScore + 1]));
-            } else if (computerSpeed === userSpeed) {
-              setResult(0);
-            }
-            setIsModalOpen(true);
+            compareTwoValueField(computerFieldNumber, userFieldNumber);
           }
           return;
 
         case "cost_in_credits":
-          const computerFieldCredits = selectedRandomCard?.cost_in_credits;
-          const userFieldCredits = hiddenRandomCard?.cost_in_credits;
-          const computerCredits = parseInt(
-            selectedRandomCard?.cost_in_credits.replace(",", "")
-          );
-          const userCredits = parseInt(
-            hiddenRandomCard?.cost_in_credits.replace(",", "")
-          );
-
-          if (
-            computerFieldCredits === "unknown" ||
-            computerFieldCredits === "n/a" ||
-            userFieldCredits === "unknown" ||
-            userFieldCredits === "n/a"
-          ) {
+          if (!isValidType) {
             // Draw
             setResult(0);
             setIsModalOpen(true);
           } else {
-            if (computerCredits > userCredits) {
-              setResult(-1);
-              dispatch(actSetScoreGame([computerScore + 1, userScore]));
-            } else if (computerCredits < userCredits) {
-              setResult(1);
-              dispatch(actSetScoreGame([computerScore, userScore + 1]));
-            } else if (computerCredits === userCredits) {
-              setResult(0);
-            }
-            setIsModalOpen(true);
+            compareTwoValueField(computerFieldNumber, userFieldNumber);
           }
           return;
 
         case "passengers":
-          const computerFieldPassengers = selectedRandomCard?.passengers;
-          const userFieldPassengers = hiddenRandomCard?.passengers;
-          const computerPassengers = parseInt(
-            selectedRandomCard?.passengers.replace(",", "")
-          );
-          const userPassengers = parseInt(
-            hiddenRandomCard?.passengers.replace(",", "")
-          );
-
-          if (
-            computerFieldPassengers === "unknown" ||
-            computerFieldPassengers === "n/a" ||
-            userFieldPassengers === "unknown" ||
-            userFieldPassengers === "n/a"
-          ) {
+          if (!isValidType) {
             // Draw
             setResult(0);
             setIsModalOpen(true);
           } else {
-            if (computerPassengers > userPassengers) {
-              setResult(-1);
-              dispatch(actSetScoreGame([computerScore + 1, userScore]));
-            } else if (computerPassengers < userPassengers) {
-              setResult(1);
-              dispatch(actSetScoreGame([computerScore, userScore + 1]));
-            } else if (computerPassengers === userPassengers) {
-              setResult(0);
-            }
-            setIsModalOpen(true);
+            compareTwoValueField(computerFieldNumber, userFieldNumber);
           }
           return;
 
@@ -182,15 +152,7 @@ const StarCardInfo = (props: StarCardInfoProps) => {
           const computerFilms = selectedRandomCard?.films.length;
           const userFilm = hiddenRandomCard?.films.length;
 
-          if (computerFilms > userFilm) {
-            setResult(-1);
-            dispatch(actSetScoreGame([computerScore + 1, userScore]));
-          } else if (computerFilms < userFilm) {
-            setResult(1);
-            dispatch(actSetScoreGame([computerScore, userScore + 1]));
-          } else if (computerFilms === userFilm) {
-            setResult(0);
-          }
+          compareTwoValueField(computerFilms, userFilm);
           setIsModalOpen(true);
           return;
       }
@@ -233,6 +195,7 @@ const StarCardInfo = (props: StarCardInfoProps) => {
         onOk={handleModalOk}
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: "none" } }}
+        closable={false}
       >
         {getResultEachTurn()}
       </Modal>
@@ -243,6 +206,7 @@ const StarCardInfo = (props: StarCardInfoProps) => {
         onOk={handleModalResultOk}
         cancelButtonProps={{ style: { display: "none" } }}
         okText="Continue"
+        closable={false}
       >
         <ResultGame className="result">{getFinalResult()}</ResultGame>
       </Modal>

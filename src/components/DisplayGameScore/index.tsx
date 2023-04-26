@@ -1,7 +1,7 @@
 import { GameScoreWrapper } from "./style";
 import { useSelector } from "react-redux";
 
-const GameScore = () => {
+const DisplayGameScore = () => {
   const movieStateReducer = useSelector((state: any) => state?.movieReducer);
   const score = movieStateReducer?.score;
   const totalTurn = movieStateReducer?.totalTurn;
@@ -16,4 +16,4 @@ const GameScore = () => {
   );
 };
 
-export default GameScore;
+export default DisplayGameScore;

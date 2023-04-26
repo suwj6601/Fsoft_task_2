@@ -1,4 +1,3 @@
-import React from "react";
 import StarCardInfo from "../StarCardInfo";
 import { StarCardWrapper } from "./style";
 import starWarImg from "../../image/starwar.png";
