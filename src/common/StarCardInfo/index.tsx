@@ -80,8 +80,14 @@ const StarCardInfo = (props: StarCardInfoProps) => {
           const userFieldSpeed = hiddenRandomCard?.max_atmosphering_speed;
           const computerSpeed = parseInt(
             selectedRandomCard?.max_atmosphering_speed
+              .replace(",", "")
+              .replace(",", "")
           );
-          const userSpeed = parseInt(hiddenRandomCard?.max_atmosphering_speed);
+          const userSpeed = parseInt(
+            hiddenRandomCard?.max_atmosphering_speed
+              .replace(",", "")
+              .replace(",", "")
+          );
 
           if (
             computerFieldSpeed === "unknown" ||
@@ -109,8 +115,12 @@ const StarCardInfo = (props: StarCardInfoProps) => {
         case "cost_in_credits":
           const computerFieldCredits = selectedRandomCard?.cost_in_credits;
           const userFieldCredits = hiddenRandomCard?.cost_in_credits;
-          const computerCredits = parseInt(selectedRandomCard?.cost_in_credits);
-          const userCredits = parseInt(hiddenRandomCard?.cost_in_credits);
+          const computerCredits = parseInt(
+            selectedRandomCard?.cost_in_credits.replace(",", "")
+          );
+          const userCredits = parseInt(
+            hiddenRandomCard?.cost_in_credits.replace(",", "")
+          );
 
           if (
             computerFieldCredits === "unknown" ||
@@ -138,8 +148,12 @@ const StarCardInfo = (props: StarCardInfoProps) => {
         case "passengers":
           const computerFieldPassengers = selectedRandomCard?.passengers;
           const userFieldPassengers = hiddenRandomCard?.passengers;
-          const computerPassengers = parseInt(selectedRandomCard?.passengers);
-          const userPassengers = parseInt(hiddenRandomCard?.passengers);
+          const computerPassengers = parseInt(
+            selectedRandomCard?.passengers.replace(",", "")
+          );
+          const userPassengers = parseInt(
+            hiddenRandomCard?.passengers.replace(",", "")
+          );
 
           if (
             computerFieldPassengers === "unknown" ||
